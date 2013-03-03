@@ -29,11 +29,8 @@ function WaveTrack()
         
         var encodedWave = this.encodeWaveFile();
         
-        var bb = new BlobBuilder();
-        var blob;
-        bb.append(encodedWave.buffer);
-        blob = bb.getBlob(encoding);
-        
+        var blob = new Blob([encodedWave], {type: encoding});
+
         if (asyncMethod !== undefined)
         {
             var fileReader = new FileReader();
