@@ -280,6 +280,17 @@ function audioLayerControl(elementContext)
             this.audioLayerControl.listOfSequenceEditors[i].cut(false);
         } 
     };
+
+    this.crop = function crop()
+    {
+        for(var i = 0; i < this.audioLayerControl.listOfSequenceEditors.length; ++i)
+        {
+            this.copy();
+            this.selectAll();
+            this.paste();
+            this.zoomToFit();
+        }
+    }
     
     this.del = function del()
     {
@@ -432,6 +443,7 @@ function audioLayerControl(elementContext)
     this.elementContext.copy = this.copy;
     this.elementContext.paste = this.paste;
     this.elementContext.cut = this.cut;
+    this.elementContext.crop = this.crop;
     this.elementContext.del = this.del;
     
     // Drag and Drop

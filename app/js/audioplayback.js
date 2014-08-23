@@ -215,7 +215,7 @@ function AudioPlayback()
     this.audioContext = new webkitAudioContext();
 
     // The JavaScriptNode is used to modifiy the output buffer    
-    this.javaScriptNode = this.audioContext.createJavaScriptNode(this.audioBufferSize, 1, 2);
+    this.javaScriptNode = this.audioContext.createScriptProcessor(this.audioBufferSize, 1, 2);
     this.javaScriptNode.onaudioprocess = this.onAudioUpdate;
     this.javaScriptNode.eventHost = this;
     

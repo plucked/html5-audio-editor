@@ -920,6 +920,14 @@ window.addEventListener("cut", function(e, f)
     }
 }, true);
 
+window.addEventListener("crop", function(e, f)
+{
+    if (focusOnAudioLayerSequenceEditor !== undefined)
+    {
+        focusOnAudioLayerSequenceEditor.crop(true);
+    }
+}, true);
+
 window.addEventListener("scroll", function(e)
 {
 //debugger;
