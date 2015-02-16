@@ -244,10 +244,9 @@
         <h3>Information</h3>
       </div>
       <div class="modal-body">
-        <p>Welcome the my HTML 5 Audio Editor. You can edit WAVE, OGG and MP3 files and export them as WAVE. This application uses no extra plugins like Flash or Silverlight, its written in JavaScript and HTML.</p>
-        <p>I used some of the implementations given the design draft of the HTML5 API. Therefore you need the latest Chrome or Safari build. Firefox is not supported, because there is no implementation for the Web Audio API at the moment. If you have Internet Explorer, ... don't ask.</p>
-        <p>If it is not working for you, try the Google Chrome beta</p>
-        <p>Your browser support is: <span id="browser_support" class="label">Unkown</span></p>
+        <p>Welcome to my HTML 5 Audio Editor. You can edit WAVE, OGG and MP3 files and export them as WAVE. This application uses no extra plugins like Flash or Silverlight, it's written in JavaScript and HTML.</p>
+        <p>I used some of the implementations given the design draft of the HTML5 and Web Audio APIs. It is currently supported in all the major browsers except Internet Explorer.</p>
+        <p>Your browser support is: <span id="browser_support" class="label">Unknown</span></p>
         <p>Have fun, this is a prototype and my first web project.</p>
 
         
@@ -301,7 +300,7 @@
       {
         var supportLabel =  $('#browser_support')[0];
 
-        if (typeof(webkitAudioContext) === 'undefined')
+        if (typeof(window.AudioContext || window.webkitAudioContext) === 'undefined')
         {
           supportLabel.className = "label label-important";
           supportLabel.innerHTML = 'no web audio API support. try the latest Google Chrome build.';
