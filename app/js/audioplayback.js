@@ -212,7 +212,8 @@ function AudioPlayback()
     // Creation of a new audio context
     this.audioBufferSize = 1024;
     this.sampleRate = 0;
-    this.audioContext = new webkitAudioContext();
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    this.audioContext = new AudioContext();
 
     // The JavaScriptNode is used to modifiy the output buffer    
     this.javaScriptNode = this.audioContext.createScriptProcessor(this.audioBufferSize, 1, 2);
