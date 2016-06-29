@@ -20,27 +20,15 @@ function AudioSequence()
         // requirement check
         if (otherAudioSequence.sampleRate !== this.sampleRate) throw "Samplerate does not match.";
         if (mergePosition < 0 || mergePosition > this.data.length) throw "Merge position is invalid!";
-        
+
         // create a new data block
-        var newData = [];
-        
-        // iterate through the local data block
-        for (var i = 0; i <= this.data.length; ++i)
-        {
-            // if the position is reached where the merge has to be filled in
-            if (i == mergePosition)
-            {
-                for (var j = 0; j < otherAudioSequence.data.length; ++j)
-                {
-                    newData.push(otherAudioSequence.data[j]);
-                }
-            }
-            // copy from the old to the new local data block
-            if (i < this.data.length)
-            {
-                newData.push(this.data[i]);
-            }
-        }
+        var newData = new Float32Array(this.data.length + otherAudioSequence.data.length);
+
+        // combine data
+        newData.set(this.data.subarray(0, mergePosition));
+        newData.set(otherAudioSequence.data, mergePosition);
+        newData.set(this.data.subarray(mergePosition), mergePosition + otherAudioSequence.data.length);
+
         // set new references
         this.data = newData;
         
@@ -59,9 +47,17 @@ function AudioSequence()
         if (len === undefined) len = this.data.length - start;        
         
         if (start >= this.data.length || start < 0) throw "The start is invalid";
-        if (start + len > this.data.length || len < 0) throw "The length is invalid.";    
-        
-        this.data.splice(start, len);
+        if (start + len > this.data.length || len < 0) throw "The length is invalid.";
+
+        // create a new data block
+        var newData = new Float32Array(this.data.length - len);
+
+        // copy relevant fragments of data
+        newData.set(this.data.subarray(0, start));
+        newData.set(this.data.subarray(start + len), start);
+
+        // set new references
+        this.data = newData;
         
         // update gain value
         this.gain = this.getGain();
@@ -82,13 +78,10 @@ function AudioSequence()
         if (start < 0 || start > this.data.length) throw "Invalid start parameter.";
         if (len < 0 || len + start > this.data.length) throw "Invalid len parameter.";
         
-        // create new instance and copy array elements
+        // create new instance and copy array fragment
         var clonedSequence = CreateNewAudioSequence(this.sampleRate);
-        for(var i = start; i < start + len; ++i)
-        {
-            clonedSequence.data.push(this.data[i]);       
-        }
-        
+        clonedSequence.data = this.data.slice(start, start+len);
+
         // Update the gain for the cloned sequence
         clonedSequence.gain = clonedSequence.getGain();        
         return clonedSequence;
@@ -296,7 +289,7 @@ function AudioSequence()
         
         // update gain value
         this.gain = this.getGain();
-    }
+    };
     
     /**
      * Process an reverse of the data block
@@ -332,11 +325,7 @@ function CreateNewAudioSequence(sampleRate, data)
     sequence.data = [];
     if (data !== undefined)
     {
-        sequence.data = [];
-        for(var i = 0; i < data.length; ++i)
-        {
-            sequence.data.push(data[i]);
-        }
+        sequence.data = data.slice(0, data.length);
     }
     return sequence;
 }
