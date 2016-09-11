@@ -4,10 +4,10 @@ function AudioSequence()
     this.name = "unnamed";
     this.sampleRate = 0;
     this.data = [];
-    
+
     // gain level of the signal data (maximum value)
     this.gain = 0.0;
-    
+
     /**
      * This function merges another sequence from with the same sampling rate
      * into this.
@@ -20,10 +20,10 @@ function AudioSequence()
         // requirement check
         if (otherAudioSequence.sampleRate !== this.sampleRate) throw "Samplerate does not match.";
         if (mergePosition < 0 || mergePosition > this.data.length) throw "Merge position is invalid!";
-        
+
         // create a new data block
         var newData = [];
-        
+
         // iterate through the local data block
         for (var i = 0; i <= this.data.length; ++i)
         {
@@ -43,11 +43,28 @@ function AudioSequence()
         }
         // set new references
         this.data = newData;
-        
+
         // update gain value
         this.gain = this.getGain();
     };
-    
+
+		/**
+     * This function replace current sequence to another sequence with the same sampling rate
+     * into this.
+     * @param otherAudioSequence sequence object
+     * */
+		this.change = function change(otherAudioSequence)
+		{
+			// requirement check
+			if (otherAudioSequence.sampleRate !== this.sampleRate) throw "Samplerate does not match.";
+
+			// set new references
+			this.data = otherAudioSequence.data;
+
+			// update gain value
+			this.gain = this.getGain();
+		}
+
     /**
      * Cuts off a part of the data sequence
      * @param start beginning of the trim
@@ -56,17 +73,17 @@ function AudioSequence()
     this.trim = function trim(start, len)
     {
         // default parameter
-        if (len === undefined) len = this.data.length - start;        
-        
+        if (len === undefined) len = this.data.length - start;
+
         if (start >= this.data.length || start < 0) throw "The start is invalid";
-        if (start + len > this.data.length || len < 0) throw "The length is invalid.";    
-        
+        if (start + len > this.data.length || len < 0) throw "The length is invalid.";
+
         this.data.splice(start, len);
-        
+
         // update gain value
         this.gain = this.getGain();
     };
-    
+
     /**
      * Create a clone of this sequence. Optionally the clone can be partial
      * @param start Optional beginning of the data block which will be cloned (default is 0)
@@ -77,23 +94,23 @@ function AudioSequence()
         // default parameter
         if (start === undefined) start = 0;
         if (len === undefined) len = this.data.length - start;
-        
-        // requirement check        
+
+        // requirement check
         if (start < 0 || start > this.data.length) throw "Invalid start parameter.";
         if (len < 0 || len + start > this.data.length) throw "Invalid len parameter.";
-        
+
         // create new instance and copy array elements
         var clonedSequence = CreateNewAudioSequence(this.sampleRate);
         for(var i = start; i < start + len; ++i)
         {
-            clonedSequence.data.push(this.data[i]);       
+            clonedSequence.data.push(this.data[i]);
         }
-        
+
         // Update the gain for the cloned sequence
-        clonedSequence.gain = clonedSequence.getGain();        
+        clonedSequence.gain = clonedSequence.getGain();
         return clonedSequence;
     };
-    
+
     /**
      * Creates a sequence with a specified length of data with value 0
      * @param len length of the 0 sequence
@@ -107,14 +124,14 @@ function AudioSequence()
         {
             emptyData.push(0);
         }
-        
+
         var tmpSequence = CreateNewAudioSequence(this.sampleRate, emptyData);
         this.merge(tmpSequence, start);
-        
+
         // update gain value
         this.gain = this.getGain();
     };
-    
+
     /**
      * Copies the data into a complex array
      * @param start optional beginning of the data point (default is 0)
@@ -125,22 +142,22 @@ function AudioSequence()
         // default parameter
         if (start === undefined) start = 0;
         if (len === undefined) len = this.data.length - start;
-        
+
         // requirement check
         if (start < 0 || start > this.data.length) throw "start parameter is invalid.";
         if (len < 0 || len + start > this.data.length) throw "end parameter is invalid.";
-        
+
         var result = [];
-        
+
         for (var i = start; i < start + len; ++i)
         {
             result.push(this.data[i]);
             result.push(0);
         }
-        
+
         return result;
     };
-    
+
     /**
      * Overwrites the data with the given complex array data
      * @param complexArray the complex array which gets real value gets copied
@@ -152,24 +169,24 @@ function AudioSequence()
         // default parameter
         if (start === undefined) start = 0;
         if (len === undefined) len = this.data.length - start;
-        
+
         // requirement check
         if (complexArray.length / 2 !== len) throw "length of complex array does not match";
         if (complexArray.length % 2 !== 0) throw "the length of the complex array is totally wrong";
         if (start < 0 || start > this.data.length) throw "start parameter is invalid.";
         if (len < 0 || len + start > this.data.length) throw "end parameter is invalid.";
-        
+
         var complexArrayIdx = 0;
         for (var i = start; i < start + len; ++i)
         {
             this.data[i] = complexArray[complexArrayIdx];
             complexArrayIdx += 2;
         }
-        
+
         // update gain value
         this.gain = this.getGain();
     };
-    
+
     /**
      * Returns the gain (maximum amplitude)
      * @param start optional beginning in the data point (default is 0)
@@ -180,11 +197,11 @@ function AudioSequence()
         // default parameter
         if (start === undefined) start = 0;
         if (len === undefined) len = this.data.length - start;
-        
+
         // requirement check
         if (start < 0 || start > this.data.length) throw "start parameter is invalid.";
         if (len < 0 || len + start > this.data.length) throw "end parameter is invalid.";
-        
+
         var result = 0.0;
         for(var i = start; i < start + len; ++i)
         {
@@ -194,7 +211,7 @@ function AudioSequence()
         }
         return result;
     }
-    
+
     /**
      * Returns the total length of this sequence in seconds
      **/
@@ -202,7 +219,7 @@ function AudioSequence()
     {
         return this.data.length / this.sampleRate;
     }
-    
+
     /**
      * Apply a normalize on the data block, which changes the data value to use the optimal bandwidth
      * @param start optional beginning in the data point (default is 0)
@@ -213,11 +230,11 @@ function AudioSequence()
         // default parameter
         if (start === undefined) start = 0;
         if (len === undefined) len = this.data.length - start;
-        
+
         // requirement check
         if (start < 0 || start > this.data.length) throw "start parameter is invalid.";
         if (len < 0 || len + start > this.data.length) throw "end parameter is invalid.";
-        
+
         // do a amplitude correction of the sequence
         var gainLevel = this.getGain(start, len);
         var amplitudeCorrection = 1.0 / gainLevel;
@@ -225,11 +242,11 @@ function AudioSequence()
         {
             this.data[i] = this.data[i] * amplitudeCorrection;
         }
-        
+
         // update gain value
         this.gain = this.getGain();
     };
-    
+
     /**
      * Change the gain of the sequence. The result will give the sequence more or less amplitude
      * @param gainFactor the factor which will be applied to the sequence
@@ -241,20 +258,20 @@ function AudioSequence()
         // default parameter
         if (start === undefined) start = 0;
         if (len === undefined) len = this.data.length - start;
-        
+
         // requirement check
         if (start < 0 || start > this.data.length) throw "start parameter is invalid.";
         if (len < 0 || len + start > this.data.length) throw "end parameter is invalid.";
-        
+
         for (var i = start; i < start + len; ++i)
         {
             this.data[i] = this.data[i] * gainFactor;
         }
-        
+
         // update gain value
         this.gain = this.getGain();
     };
-    
+
     /**
      * Sets the data block to 0 (no amplitude = silence)
      * @param start optional beginning in the data point (default is 0)
@@ -264,7 +281,7 @@ function AudioSequence()
     {
         this.filterGain(0.0, start, len);
     }
-    
+
     /**
      * This function apply a fade effect on a given sequence range. The value of fadeStartGainFactor and fadeEndGainFactor
      * controls if the fade is an fadein or fadeout
@@ -278,26 +295,26 @@ function AudioSequence()
         // default parameter
         if (start === undefined) start = 0;
         if (len === undefined) len = this.data.length - start;
-        
+
         // requirement check
         if (start < 0 || start > this.data.length) throw "start parameter is invalid.";
         if (len < 0 || len + start > this.data.length) throw "end parameter is invalid.";
-        
+
         var fadeGainMultiplier = 0.0;
         var fadePos = 0.0;
         for (var i = start; i < start + len; ++i)
         {
             fadePos = (i - start) / len;
             fadeGainMultiplier = MathEx.lerp(fadeStartGainFactor, fadeEndGainFactor, fadePos);
-            
+
             this.data[i] = this.data[i] * fadeGainMultiplier;
-               
-        }   
-        
+
+        }
+
         // update gain value
         this.gain = this.getGain();
     }
-    
+
     /**
      * Process an reverse of the data block
      */
@@ -305,7 +322,7 @@ function AudioSequence()
     {
         this.data.reverse();
     };
-    
+
     this.createTestTone = function createTestTone(frequency, sampleLength)
     {
         var data = [];
@@ -313,9 +330,9 @@ function AudioSequence()
         for (var i = 0; i < sampleLength; ++i)
         {
             data.push((Math.cos(2.0 * Math.PI * i * f) +
-                      Math.cos(2.0 * Math.PI * i * f * 1)) / 2);   
+                      Math.cos(2.0 * Math.PI * i * f * 1)) / 2);
         }
-        
+
         this.data = data;
     };
 }
