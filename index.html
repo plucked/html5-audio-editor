@@ -52,6 +52,8 @@
               <a class="btn btn-primary" onclick="$('#audioLayerControl')[0].cut();"><i class="icon-chevron-up icon-white"></i> Cut</a>
               <a class="btn btn-primary" onclick="$('#audioLayerControl')[0].crop();"><i class="icon-retweet icon-white"></i> Crop</a>
               <a class="btn btn-primary" onclick="$('#audioLayerControl')[0].del();"><i class="icon-remove icon-white"></i> Delete</a>
+              <a class="btn btn-primary" onclick="$('#audioLayerControl')[0].undo();"><i class="icon-chevron-left icon-white"></i> Undo</a>
+              <a class="btn btn-primary" onclick="$('#audioLayerControl')[0].redo();"><i class="icon-chevron-right icon-white"></i> Redo</a>
             </div>
             <div class="btn-group">
               <a class="btn btn-success" onclick="$('#audioLayerControl')[0].selectAll();"><i class="icon-resize-horizontal icon-white"></i> Select All</a>
@@ -107,7 +109,7 @@
             <div id="app-progress" class="bar" style="width: 0%;"></div>
           </div>
         </div>
-      </div>  
+      </div>
       <br>
       <div class="row">
         <div class="span1"><br></div>
@@ -115,13 +117,13 @@
           <h6>Gain</h6>
           <div class="well" style="height: 130px; position:relative">
             <p>Change the volume of the selected audio sequence with the given gain multiplicator.</p>
-            
+
               <div class="pull-right" style=" position:absolute; bottom: 5px; width: 100%;" >
                 <div class="btn-group" >
-                  
+
                     <button class="btn btn-success" onclick="decrease_db()"><i class="icon-minus"></i></button>
                     <button id="gain-db" class="btn disabled" onclick="gain_btn_clicked()">0 db</button>
-                    <button class="btn btn-success" onclick="increase_db()"><i class="icon-plus"></i></button> 
+                    <button class="btn btn-success" onclick="increase_db()"><i class="icon-plus"></i></button>
                 </div>
               </div>
             <script type="text/javascript">
@@ -143,7 +145,7 @@
                 {
                   var gain_btn = $('#gain-db')[0];
 
-                  gain_btn.innerHTML = db_gain + ' db'; 
+                  gain_btn.innerHTML = db_gain + ' db';
 
                   if (db_gain === 0)
                   {
@@ -203,14 +205,14 @@
 
       <div class="row">
         <div class="span8">
-        
+
         </div>
       </div>
 
       <!-- Le Footer
-    ================================================== --> 
+    ================================================== -->
        <footer class="footer">
-        
+
         <br>
         <p class="pull-left"><a href="#">Back to top</a></p>
         <blockquote class="pull-right">
@@ -220,10 +222,10 @@
 	<p>The project is available at github: <a href="https://github.com/plucked/html5-audio-editor">html5-audio-editor</a></p>
       </blockquote>
       </footer>
- 
-     
+
+
     <!-- Le Help
-    ================================================== -->  
+    ================================================== -->
     <div class="modal hide" id="helpAsModal">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -238,7 +240,7 @@
     </div>
 
      <!-- Le Startup
-    ================================================== -->  
+    ================================================== -->
     <div class="modal hide" id="welcomeAsModal">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -250,7 +252,7 @@
         <p>Your browser support is: <span id="browser_support" class="label">Unknown</span></p>
         <p>Have fun, this is a prototype and my first web project.</p>
 
-        
+
       </div>
       <div class="modal-footer">
         <a href="#" class="btn" data-dismiss="modal">Close</a>
@@ -277,8 +279,8 @@
 
 
     <script type="text/javascript" src="app/js/ACFIRFilter.js"></script>
-    <script type="text/javascript" src="app/js/ACAAFilter.js"></script> 
-    <script type="text/javascript" src="app/js/ACSpectrum.js"></script>    
+    <script type="text/javascript" src="app/js/ACAAFilter.js"></script>
+    <script type="text/javascript" src="app/js/ACSpectrum.js"></script>
     <script type="text/javascript" src="app/js/ACFFT.js"></script>
     <script type="text/javascript" src="app/js/SpectrumWorker.js"></script>
     <script type="text/javascript" src="app/js/SpectrumDisplay.js"></script>
