@@ -290,7 +290,7 @@ function audioLayerControl(elementContext)
             this.paste();
             this.zoomToFit();
         }
-    }
+    };
     
     this.del = function del()
     {
@@ -313,7 +313,7 @@ function audioLayerControl(elementContext)
         
         wave.fromAudioSequences(sequenceList);
         return wave;
-    }
+    };
     
     this.playToggle = function playToggle()
     {
@@ -459,8 +459,8 @@ function audioLayerControl(elementContext)
         {
             $('#app-progress')[0].style['width'] = '50%';
             activeAudioLayerControl = this.eventHost.elementContext;
-            this.eventHost.audioPlayback.audioContext.decodeAudioData(this.resultArrayBuffer, this.eventHost.decodeAudioFinished, this.eventHost.decodeAudioFailed);  
-        }
+            this.eventHost.audioPlayback.audioContext.decodeAudioData(this.resultArrayBuffer, this.eventHost.decodeAudioFinished, this.eventHost.decodeAudioFailed);
+        };
         
         filedb.onFail = function(e)
         {
@@ -486,12 +486,16 @@ function audioLayerControl(elementContext)
               default:
                 msg = 'Unknown Error ' + e.code;
                 break;
-            };
+            }
           
             console.log('Error: ' + msg);
         }  
     };
-    
+
+    this.decodeAudioFailed = function decodeAudioFailed(audioBuffer) {
+        console.log('decodeAudioFailed, audiobuffer=', audioBuffer);
+
+    };
     this.decodeAudioFinished = function decodeAudioFinished(audioBuffer)
     {
         $('#app-progress')[0].style['width'] = '90%';
