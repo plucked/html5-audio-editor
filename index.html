@@ -1,319 +1,260 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>HTML5 Audio Editor</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <!-- Le styles -->
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
-    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="bootstrap/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="bootstrap/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="bootstrap/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="bootstrap/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="bootstrap/ico/apple-touch-icon-57-precomposed.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <script type="module" src="/src/main.js"></script>
   </head>
 
-  <body onload="onDocumentLoaded()">
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="brand" href="#">HTML5 Audio Editor</a>
-          <ul class="nav pull-right">
-            <li><a data-toggle="modal" href="#helpAsModal">Help</a></li>
-          </ul>
-        </div>
+  <body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">HTML5 Audio Editor</a>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="modal" href="#helpAsModal"
+              >Help</a
+            >
+          </li>
+        </ul>
       </div>
-    </div>
-    <div class="container">
+    </nav>
+    <div class="container" style="margin-top: 60px">
       <div class="row">
-        <div class="span12">
-          <center>
-             <div class="btn-toolbar">
-            <div class="btn-group">
-              <a class="btn btn-primary" onclick="$('#audioLayerControl')[0].copy();"><i class="icon-share icon-white"></i> Copy</a>
-              <a class="btn btn-primary" onclick="$('#audioLayerControl')[0].paste();"><i class="icon-chevron-down icon-white"></i> Paste</a>
-              <a class="btn btn-primary" onclick="$('#audioLayerControl')[0].cut();"><i class="icon-chevron-up icon-white"></i> Cut</a>
-              <a class="btn btn-primary" onclick="$('#audioLayerControl')[0].crop();"><i class="icon-retweet icon-white"></i> Crop</a>
-              <a class="btn btn-primary" onclick="$('#audioLayerControl')[0].del();"><i class="icon-remove icon-white"></i> Delete</a>
-            </div>
-            <div class="btn-group">
-              <a class="btn btn-success" onclick="$('#audioLayerControl')[0].selectAll();"><i class="icon-resize-horizontal icon-white"></i> Select All</a>
-              <a class="btn btn-success" onclick="$('#audioLayerControl')[0].zoomIntoSelection();"><i class="icon-plus-sign icon-white"></i> Zoom To Selection</a>
-              <a class="btn btn-success" onclick="$('#audioLayerControl')[0].zoomToFit();"><i class="icon-fullscreen icon-white"></i> Zoom To Fit</a>
+        <div class="col-12">
+          <div class="text-center">
+            <div class="btn-toolbar">
+              <div class="btn-group">
+                <a class="btn btn-primary" id="copy-btn">Copy</a>
+                <a class="btn btn-primary" id="paste-btn"></i> Paste</a>
+                <a class="btn btn-primary" id="cut-btn"></i> Cut</a>
+                <a class="btn btn-primary" id="crop-btn"></i> Crop</a>
+                <a class="btn btn-primary" id="delete-btn"></i> Delete</a>
+              </div>
+              <div class="btn-group">
+                <a class="btn btn-success" id="select-all-btn">Select All</a>
+                <a class="btn btn-success" id="zoom-to-selection-btn"
+                  >Zoom To Selection</a
+                >
+                <a class="btn btn-success" id="zoom-to-fit-btn">Zoom To Fit</a>
+              </div>
             </div>
           </div>
-        </center>
         </div>
       </div>
       <hr />
       <div class="row">
-        <div class="span4">
+        <div class="col-4">
           <h6>Spectrum</h6>
-          <div class="well">
+          <div class="card card-body">
             <div id="spectrum"></div>
           </div>
         </div>
-        <div class="span8">
+        <div class="col-8">
           <h6>Editor</h6>
-          <div class="well">
-             <audioLayerControl id="audioLayerControl" title="CloudCompany.mp3" />
+          <div class="card card-body">
+            <audioLayerControl
+              id="audioLayerControl"
+              title="CloudCompany.mp3"
+            />
           </div>
-          <!--<div id="editor">
-                <div id="editorbox">
-                    <audioLayerControl id="audioLayerControl" title="CloudCompany.mp3" />
-                </div>
-            </div>-->
         </div>
       </div>
-      <hr>
+      <hr />
       <div class="row">
-        <div class="span12">
-          <center>
+        <div class="col-12">
+          <div class="text-center">
             <div class="btn-toolbar">
               <div class="btn-group">
-                <a id="btn_play" class="btn btn-success btn-large" onclick="$('#audioLayerControl')[0].play()" rel="tooltip" title="first tooltip"><i class="icon-play icon-white"></i></a>
-                <a id="btn_pause" class="btn btn-success btn-large disabled"><i class="icon-pause icon-white"></i></a>
-                <a id="btn_stop" class="btn btn-success btn-large" onclick="$('#audioLayerControl')[0].stop()"><i class="icon-stop icon-white"></i></a>
-                <a id="btn_loop" class="btn btn-warning btn-large" data-toggle="button" onclick="$('#audioLayerControl')[0].toggleLoop();"><i class="icon-repeat icon-white"></i></a>
+                <a id="btn_play" class="btn btn-success btn-lg">Play</a>
+                <a id="btn_pause" class="btn btn-success btn-lg disabled"
+                  >Pause</a
+                >
+                <a id="btn_stop" class="btn btn-success btn-lg">Stop</a>
+                <a
+                  id="btn_loop"
+                  class="btn btn-warning btn-lg"
+                  data-bs-toggle="button"
+                  >Loop</a
+                >
               </div>
               <div class="btn-group">
-                <a class="btn btn-large btn-primary" onclick="$('#audioLayerControl')[0].save($('#savelink')[0]);"><i class="icon-fire"></i> Render</a>
-                <a class="btn btn-large btn-success disabled" id="savelink" download="export.wav"><i class="icon-download"></i> Save</a>
+                <a class="btn btn-lg btn-primary" id="render-btn">Render</a>
+                <a
+                  class="btn btn-lg btn-success disabled"
+                  id="savelink"
+                  download="export.wav"
+                  >Save</a
+                >
               </div>
             </div>
-          </center>
+          </div>
         </div>
       </div>
       <div class="row">
-        <div class="span4 offset4">
-          <div class="progress progress-striped active">
-            <div id="app-progress" class="bar" style="width: 0%;"></div>
+        <div class="col-4 offset-4">
+          <div class="progress">
+            <div
+              id="app-progress"
+              class="progress-bar progress-bar-striped progress-bar-animated"
+              role="progressbar"
+              style="width: 0%"
+              aria-valuenow="0"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            ></div>
           </div>
         </div>
-      </div>  
-      <br>
+      </div>
+      <br />
       <div class="row">
-        <div class="span1"><br></div>
-        <div class="span2">
+        <div class="col-1"><br /></div>
+        <div class="col-2">
           <h6>Gain</h6>
-          <div class="well" style="height: 130px; position:relative">
-            <p>Change the volume of the selected audio sequence with the given gain multiplicator.</p>
-            
-              <div class="pull-right" style=" position:absolute; bottom: 5px; width: 100%;" >
-                <div class="btn-group" >
-                  
-                    <button class="btn btn-success" onclick="decrease_db()"><i class="icon-minus"></i></button>
-                    <button id="gain-db" class="btn disabled" onclick="gain_btn_clicked()">0 db</button>
-                    <button class="btn btn-success" onclick="increase_db()"><i class="icon-plus"></i></button> 
-                </div>
+          <div class="card card-body" style="height: 130px; position: relative">
+            <p>
+              Change the volume of the selected audio sequence with the given
+              gain multiplicator.
+            </p>
+            <div class="float-end" style="position: absolute; bottom: 5px; width: 100%">
+              <div class="btn-group">
+                <button class="btn btn-success" id="decrease-db-btn">
+                  -
+                </button>
+                <button id="gain-db" class="btn disabled">0 db</button>
+                <button class="btn btn-success" id="increase-db-btn">
+                  +
+                </button>
               </div>
-            <script type="text/javascript">
-                var db_gain = 0;
-
-                function decrease_db()
-                {
-                  --db_gain;
-                  update_db_gain_btn();
-                }
-
-                function increase_db()
-                {
-                  ++db_gain;
-                  update_db_gain_btn();
-                }
-
-                function update_db_gain_btn()
-                {
-                  var gain_btn = $('#gain-db')[0];
-
-                  gain_btn.innerHTML = db_gain + ' db'; 
-
-                  if (db_gain === 0)
-                  {
-                    gain_btn.className = 'btn disabled';
-                  }
-                  else
-                  {
-                    gain_btn.className = 'btn btn-primary';
-                  }
-                }
-
-                function gain_btn_clicked()
-                {
-                  $('#audioLayerControl')[0].filterGain(db_gain);
-                  db_gain = 0;
-                  update_db_gain_btn();
-                }
-                </script>
+            </div>
           </div>
         </div>
-        <div class="span2">
+        <div class="col-2">
           <h6>Normalize</h6>
-          <div class="well" style="height: 130px; position:relative">
+          <div class="card card-body" style="height: 130px; position: relative">
             <p>Adjust the volume to the maximum of the selected audio sequence.</p>
-            <a style="position:absolute; bottom: 5px; right: 5px"  class="btn btn-primary pull-right" onclick="$('#audioLayerControl')[0].filterNormalize();">Apply</a>
-            <br>
+            <a style="position: absolute; bottom: 5px; right: 5px" class="btn btn-primary float-end" id="normalize-btn">Apply</a>
+            <br />
           </div>
         </div>
-        <div class="span2">
+        <div class="col-2">
           <h6>Silence</h6>
-          <div class="well" style="height: 130px; position:relative">
+          <div class="card card-body" style="height: 130px; position: relative">
             <p>Silence the selected audio sequence</p>
-            <a style="position:absolute; bottom: 5px; right: 5px"  class="btn btn-primary pull-right" onclick="$('#audioLayerControl')[0].filterSilence();">Apply</a>
-            <br>
+            <a style="position: absolute; bottom: 5px; right: 5px" class="btn btn-primary float-end" id="silence-btn">Apply</a>
+            <br />
           </div>
         </div>
-        <div class="span2">
+        <div class="col-2">
           <h6>Fade In</h6>
-          <div class="well" style="height: 130px; position:relative">
+          <div class="card card-body" style="height: 130px; position: relative">
             <p>Create a linear fade int of the selected audio sequence</p>
-            <a style="position:absolute; bottom: 5px; right: 5px"  class="btn btn-primary pull-right" onclick="$('#audioLayerControl')[0].filterFadeIn();">Apply</a>
-            <br>
+            <a style="position: absolute; bottom: 5px; right: 5px" class="btn btn-primary float-end" id="fade-in-btn">Apply</a>
+            <br />
           </div>
         </div>
-        <div class="span2">
+        <div class="col-2">
           <h6>Fade Out</h6>
-          <div class="well" style="height: 130px; position:relative">
+          <div class="card card-body" style="height: 130px; position: relative">
             <p>Create a linear fade out of the selected audio sequence</p>
-            <a style="position:absolute; bottom: 5px; right: 5px" class="btn btn-primary pull-right" onclick="$('#audioLayerControl')[0].filterFadeOut();">Apply</a>
-            <br>
+            <a style="position: absolute; bottom: 5px; right: 5px" class="btn btn-primary float-end" id="fade-out-btn">Apply</a>
+            <br />
           </div>
         </div>
-        <div class="span1">
-
-        </div>
+        <div class="col-1"></div>
       </div>
-
       <div class="row">
-        <div class="span8">
-        
+        <div class="col-8"></div>
+      </div>
+      <footer class="footer">
+        <br />
+        <p class="float-start"><a href="#">Back to top</a></p>
+        <blockquote class="float-end">
+          <p>
+            This Web-Application was written by Rainer Heynke
+            <a href="http://twitter.com/plucked">@plucked</a>
+          </p>
+          <p>
+            I used
+            <a href="http://twitter.github.com/bootstrap/index.html"
+              >Bootstrap</a
+            >
+            for the design and especially the theme
+            <a href="http://bootswatch.com/slate/">Slate</a>
+          </p>
+          <p>
+            Parts of the code were taken from the
+            <a href="http://audacity.sourceforge.net/">Audacity</a> project and
+            converted from C++ to JavaScript
+          </p>
+          <p>
+            The project is available at github:
+            <a href="https://github.com/plucked/html5-audio-editor"
+              >html5-audio-editor</a
+            >
+          </p>
+        </blockquote>
+      </footer>
+      <div class="modal fade" id="helpAsModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Help</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <p>Help text … TODO</p>
+            </div>
+            <div class="modal-footer">
+              <a href="#" class="btn" data-bs-dismiss="modal">Close</a>
+            </div>
+          </div>
         </div>
       </div>
-
-      <!-- Le Footer
-    ================================================== --> 
-       <footer class="footer">
-        
-        <br>
-        <p class="pull-left"><a href="#">Back to top</a></p>
-        <blockquote class="pull-right">
-        <p>This Web-Application was written by Rainer Heynke <a href="http://twitter.com/plucked">@plucked</a></p>
-        <p>I used <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a> for the design and especially the theme <a href="http://bootswatch.com/slate/">Slate</a></p>
-        <p>Parts of the code were taken from the <a href="http://audacity.sourceforge.net/">Audacity</a> project and converted from C++ to JavaScript</p>
-	<p>The project is available at github: <a href="https://github.com/plucked/html5-audio-editor">html5-audio-editor</a></p>
-      </blockquote>
-      </footer>
- 
-     
-    <!-- Le Help
-    ================================================== -->  
-    <div class="modal hide" id="helpAsModal">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3>Help</h3>
-      </div>
-      <div class="modal-body">
-        <p>Help text … TODO</p>
-      </div>
-      <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Close</a>
-      </div>
-    </div>
-
-     <!-- Le Startup
-    ================================================== -->  
-    <div class="modal hide" id="welcomeAsModal">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3>Information</h3>
-      </div>
-      <div class="modal-body">
-        <p>Welcome to my HTML 5 Audio Editor. You can edit WAVE, OGG and MP3 files and export them as WAVE. This application uses no extra plugins like Flash or Silverlight, it's written in JavaScript and HTML.</p>
-        <p>I used some of the implementations given the design draft of the HTML5 and Web Audio APIs. It is currently supported in all the major browsers except Internet Explorer.</p>
-        <p>Your browser support is: <span id="browser_support" class="label">Unknown</span></p>
-        <p>Have fun, this is a prototype and my first web project.</p>
-
-        
-      </div>
-      <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">Close</a>
+      <div class="modal fade" id="welcomeAsModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Information</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <p>
+                Welcome to my HTML 5 Audio Editor. You can edit WAVE, OGG and
+                MP3 files and export them as WAVE. This application uses no
+                extra plugins like Flash or Silverlight, it's written in
+                JavaScript and HTML.
+              </p>
+              <p>
+                I used some of the implementations given the design draft of the
+                HTML5 and Web Audio APIs. It is currently supported in all the
+                major browsers except Internet Explorer.
+              </p>
+              <p>
+                Your browser support is:
+                <span id="browser_support" class="badge">Unknown</span>
+              </p>
+              <p>Have fun, this is a prototype and my first web project.</p>
+            </div>
+            <div class="modal-footer">
+              <a href="#" class="btn" data-bs-dismiss="modal">Close</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="jquery/js/jquery-1.7.2.js"></script>
-    <script src="bootstrap/js/bootstrap-transition.js"></script>
-    <script src="bootstrap/js/bootstrap-alert.js"></script>
-    <script src="bootstrap/js/bootstrap-modal.js"></script>
-    <script src="bootstrap/js/bootstrap-dropdown.js"></script>
-    <script src="bootstrap/js/bootstrap-scrollspy.js"></script>
-    <script src="bootstrap/js/bootstrap-tab.js"></script>
-    <script src="bootstrap/js/bootstrap-tooltip.js"></script>
-    <script src="bootstrap/js/bootstrap-popover.js"></script>
-    <script src="bootstrap/js/bootstrap-button.js"></script>
-    <script src="bootstrap/js/bootstrap-collapse.js"></script>
-    <script src="bootstrap/js/bootstrap-carousel.js"></script>
-    <script src="bootstrap/js/bootstrap-typeahead.js"></script>
-
-
-    <script type="text/javascript" src="app/js/ACFIRFilter.js"></script>
-    <script type="text/javascript" src="app/js/ACAAFilter.js"></script> 
-    <script type="text/javascript" src="app/js/ACSpectrum.js"></script>    
-    <script type="text/javascript" src="app/js/ACFFT.js"></script>
-    <script type="text/javascript" src="app/js/SpectrumWorker.js"></script>
-    <script type="text/javascript" src="app/js/SpectrumDisplay.js"></script>
-    <script type="text/javascript" src="app/js/audioplayback.js"></script>
-    <script type="text/javascript" src="app/js/filedropbox.js"></script>
-    <script type="text/javascript" src="app/js/fft.js"></script>
-    <script type="text/javascript" src="app/js/audioLayerControl.js"></script>
-    <script type="text/javascript" src="app/js/audiosequence.js"></script>
-    <script type="text/javascript" src="app/js/AudioSequenceEditor.js"></script>
-    <script type="text/javascript" src="app/js/mathutilities.js"></script>
-    <script type="text/javascript" src="app/js/wavetrack.js"></script>
-    <script type="text/javascript" src="app/js/binarytoolkit.js"></script>
-    <script type="text/javascript" src="app/js/filesystemutility.js"></script>
-    <script type="text/javascript" src="app/js/recorder.js"></script>
-    <script type="text/javascript" src="app/js/recorderWorker.js"></script>
-    <script type="text/javascript" src="app/js/editorapp.js"></script>
-
-    <script type="text/javascript">
-      $(window).load(function()
-      {
-        var supportLabel =  $('#browser_support')[0];
-
-        if (typeof(window.AudioContext || window.webkitAudioContext) === 'undefined')
-        {
-          supportLabel.className = "label label-important";
-          supportLabel.innerHTML = 'no web audio API support. try the latest Google Chrome build.';
-        }
-        else
-        {
-          supportLabel.className = "label label-success";
-          supportLabel.innerHTML = 'you have web audio API support.';
-        }
-
-        $('#welcomeAsModal').modal('show');
-      });
-    </script>
   </body>
 </html>

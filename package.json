@@ -1,0 +1,30 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "A small audio editor written in html5 and javascript without usage of external plugins.",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plucked/html5-audio-editor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/plucked/html5-audio-editor/issues"
+  },
+  "homepage": "https://github.com/plucked/html5-audio-editor#readme",
+  "devDependencies": {
+    "vite": "^5.3.3"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.7",
+    "jquery": "^3.7.1"
+  }
+}
